@@ -465,6 +465,8 @@ bool hidh_open(uint8_t rhport, uint8_t daddr, tusb_desc_interface_t const *desc_
 
   TU_VERIFY(TUSB_CLASS_HID == desc_itf->bInterfaceClass);
 
+  if(desc_itf->bInterfaceNumber == 1) {return true;}
+
   TU_LOG2("[%u] HID opening Interface %u\r\n", daddr, desc_itf->bInterfaceNumber);
 
   // len = interface + hid + n*endpoints
@@ -548,6 +550,8 @@ bool hidh_set_config(uint8_t daddr, uint8_t itf_num)
   xfer.setup     = &request;
   xfer.user_data = CONFG_SET_IDLE;
 
+  if(itf_num == 1) {return true;}
+
   // fake request to kick-off the set config process
   process_set_config(&xfer);
 
@@ -567,6 +571,8 @@ static void process_set_config(tuh_xfer_t* xfer)
   uintptr_t const state = xfer->user_data;
   uint8_t const itf_num = (uint8_t) tu_le16toh(xfer->setup->wIndex);
   uint8_t const daddr   = xfer->daddr;
+
+  if(itf_num == 1) {return true;}
 
   uint8_t const idx       = tuh_hid_itf_get_index(daddr, itf_num);
   hidh_interface_t* p_hid = get_hid_itf(daddr, idx);
@@ -619,6 +625,8 @@ static void config_driver_mount_complete(uint8_t daddr, uint8_t idx, uint8_t con
 {
   hidh_interface_t* p_hid = get_hid_itf(daddr, idx);
   TU_VERIFY(p_hid, );
+
+  if(idx== 1) {return ;}
 
   // enumeration is complete
   if (tuh_hid_mount_cb) tuh_hid_mount_cb(daddr, idx, desc_report, desc_len);
