@@ -572,7 +572,7 @@ static void process_set_config(tuh_xfer_t* xfer)
   uint8_t const itf_num = (uint8_t) tu_le16toh(xfer->setup->wIndex);
   uint8_t const daddr   = xfer->daddr;
 
-  if(itf_num == 1) {return true;}
+  if(itf_num == 1) {return ;}
 
   uint8_t const idx       = tuh_hid_itf_get_index(daddr, itf_num);
   hidh_interface_t* p_hid = get_hid_itf(daddr, idx);
