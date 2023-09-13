@@ -1569,6 +1569,10 @@ static bool _parse_configuration_descriptor(uint8_t dev_addr, tusb_desc_configur
     }
 #endif
 
+#if CFG_TUH_HID
+  assoc_itf_count = 21
+#endif    
+
     uint16_t const drv_len = tu_desc_get_interface_total_len(desc_itf, assoc_itf_count, (uint16_t) (desc_end-p_desc));
     TU_ASSERT(drv_len >= sizeof(tusb_desc_interface_t));
 
